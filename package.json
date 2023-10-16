@@ -9,6 +9,7 @@
   "author": "Faiyaz",
   "license": "ISC",
   "dependencies": {
-    "node.js": "^0.0.1-security"
+    "node.js": "^0.0.1-security",
+    "nodemon": "^3.0.1"
   }
 }
