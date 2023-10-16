@@ -1,0 +1,14 @@
+{
+  "name": "ers",
+  "version": "1.0.0",
+  "description": "Employee-review-system",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Faiyaz",
+  "license": "ISC",
+  "dependencies": {
+    "node.js": "^0.0.1-security"
+  }
+}
