@@ -1,4 +1,12 @@
 const Admin = require('../models/admin');
+const User = require('../models/users');
+
+module.exports.admin_dashboard = (req,res)=>{
+    return res.render('admin_dashboard',{
+        title : 'Admin Dashboard'
+    })
+}
+
 
 
 module.exports.admin_sign_up = (req,res)=>{
@@ -15,6 +23,11 @@ module.exports.create = async (req, res) => {
             return res.redirect('/admin/sign-in');
         } else if (req.body.passcode === 'YOUAREADMIN') { // Check the passcode
             await Admin.create({
+                name: req.body.name,
+                email: req.body.email,
+                password: req.body.password
+            });
+            await User.create({
                 name: req.body.name,
                 email: req.body.email,
                 password: req.body.password
