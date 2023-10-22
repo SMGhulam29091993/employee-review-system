@@ -6,6 +6,10 @@ const port = 8000;
 
 const expressLayout = require('express-ejs-layouts');
 
+// requiring session
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strategy');
 
 
 // connecting with the db
@@ -25,6 +29,22 @@ app.set('layout extractScripts', true);
 // setting ejs view engine
 app.set('view engine', 'ejs');
 app.set('views', './views');
+
+// creating the session
+app.use(session({
+    name : 'ERS',
+    secret : 'somethingBlah',
+    saveUninitialized : false,
+    resave : false,
+    cookie : {
+        maxAge : (1000*60*100)
+    }
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(passport.setUserAuthenticatedUser);
+app.use(passport.setAdminAuthenticatedUser);
 
 app.use('/', require('./routes'));
 

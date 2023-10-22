@@ -1,5 +1,7 @@
 const Admin = require('../models/admin');
 const User = require('../models/users');
+const passport = require('../config/passport-local-strategy');
+
 
 module.exports.admin_dashboard = (req,res)=>{
     return res.render('admin_dashboard',{
@@ -7,6 +9,11 @@ module.exports.admin_dashboard = (req,res)=>{
     })
 }
 
+module.exports.admin_profile = (req,res)=>{
+    return res.render('profile',{
+        title : `${req.user.name} Profile`
+    })
+}
 
 
 module.exports.admin_sign_up = (req,res)=>{
@@ -30,7 +37,8 @@ module.exports.create = async (req, res) => {
             await User.create({
                 name: req.body.name,
                 email: req.body.email,
-                password: req.body.password
+                password: req.body.password,
+                passcode : req.body.passcode
             });
             return res.redirect('/admin/sign-in');
         } else {
@@ -48,4 +56,8 @@ module.exports.admin_sign_in = (req,res)=>{
     return res.render('admin_sign_in',{
         title : 'Admin Sign-In'
     });
+};
+
+module.exports.create_admin_session = (req,res)=>{
+    return res.redirect('/admin/profile');
 };

@@ -1,34 +1,38 @@
 const passport = require('passport');
 
-const localStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
 
 const Admin = require('../models/admin');
 const User = require('../models/users');
 
-
-passport.use(new localStrategy({
+passport.use('localAdmin', new LocalStrategy({
     usernameField: 'email'
-},
-async function (email, password, done) { 
-    // Use try-catch for error handling
+}, async (email, password, done) => {
     try {
-        let employee = await Admin.findOne({ email: email });
-        if (employee) {
-            if (employee.passcode === 'YOUAREADMIN' && employee.password === password) {
-                return done(null, employee);
+        let admin = await Admin.findOne({ email: email });
+        if (admin) {
+            if (admin.passcode === 'YOUAREADMIN' && admin.password === password) {
+                return done(null, admin);
             }
         }
-        
-        // If the email is not found in Admin or password doesn't match, check in User
+        return done(null, false, { message: 'Invalid Admin Username/Password' });
+    } catch (error) {
+        return done(error);
+    }
+}));
+
+// Local Strategy for User
+passport.use('local', new LocalStrategy({
+    usernameField: 'email'
+}, async (email, password, done) => {
+    try {
         let user = await User.findOne({ email: email });
-        if (!user || user.password !== password) {
-            console.log('Invalid Username/Password');
-            return done(null, false);
-        } else {
+        if (user && user.password === password) {
             return done(null, user);
         }
+        return done(null, false, { message: 'Invalid Username/Password' });
     } catch (error) {
-        return done(error); // Pass the error to done if something goes wrong
+        return done(error);
     }
 }));
 
@@ -39,13 +43,65 @@ passport.serializeUser(function(user,done){
 
 // desrializing the user from the key in the cookies
 passport.deserializeUser(async function (id, done) {
+    // Use try-catch to handle errors
     try {
         const user = await User.findById(id);
-        return done(null, user);
+        if (user) {
+            done(null, user);
+        } else {
+            // If user is not found in User model, check in Admin model
+            const admin = await Admin.findById(id);
+            if (admin) {
+                done(null, admin);
+            } else {
+                done(null, false);
+            }
+        }
     } catch (error) {
-        return done(error);
+        done(error);
     }
 });
+
+
+// check if the user is authenticated
+passport.checkAuthentication = function(req, res, next) {
+    if (req.isAuthenticated()) { 
+        return next();
+    } else {
+        // Handle unauthorized access as needed, e.g., redirect to a login page
+        res.redirect('/user/sign-in'); // Example redirect for users
+    }
+};
+
+
+passport.setUserAuthenticatedUser = function(req, res, next) {
+    if (req.isAuthenticated() && req.user.passcode !== 'YOUAREADMIN') {
+        // Set the authenticated user to res.locals for views
+        res.locals.user = req.user;
+    }
+    next();
+}
+
+passport.checkAdminAuthentication = function(req, res, next) {
+    if (req.isAuthenticated() && req.user.passcode === 'YOUAREADMIN') {
+        return next();
+    } else {
+        // Redirect or handle unauthorized access as needed
+        res.redirect('/admin/login'); // For example, redirect to the admin login page
+    }
+};
+
+passport.setAdminAuthenticatedUser = function(req, res, next) {
+    if (req.isAuthenticated() && req.user.passcode === 'YOUAREADMIN') {
+        // Initialize res.locals.admin as an empty object if it doesn't exist
+        res.locals.admin = res.locals.admin || {};
+        // Set the authenticated admin user to res.locals for views
+        res.locals.admin.user = req.user;
+    }
+    next();
+}
+
+
 
 
 
