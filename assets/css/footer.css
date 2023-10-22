@@ -1,0 +1,11 @@
+:root{
+    --header-background-color: deepskyblue;
+    --header-font-color : #fff;
+}
+
+footer {
+    height: 10vh; /* You had 'height: 100;' which is not valid CSS */
+    width: 100%;
+    background-color: var(--header-background-color);
+}
+  

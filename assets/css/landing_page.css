@@ -1,0 +1,30 @@
+:root{
+    --font-color : black;
+}
+/* main{
+    height: 100%;
+} */
+#employee-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 1rem;
+    list-style: none;
+}
+ul#employee-container li{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+ul#employee-container li a{
+    text-decoration: none;
+    font-family: sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    color : var(--font-color);
+}
+ul#employee-container li img{
+    height : 15rem;
+    width : 15rem;
+}

@@ -1,0 +1,69 @@
+:root{
+    --font-color : #fff;
+    --btn-color:rgb(23, 236, 183);
+}
+section{
+    height:auto;
+    width : 100%;
+    display : flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#sign-in{
+    width : 50%;
+}
+#sign-up-form{
+    width : 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin : 2rem;
+}
+form#sign-up{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin : 2rem;
+}
+form#sign-up div{
+    margin : 0.3rem;
+}
+form#sign-up div input{
+    outline : none;
+    padding : 2px;
+    letter-spacing: 0.1rem;
+    line-height: 1rem;
+    border-radius: 1rem;
+}
+form#sign-up div input::placeholder{
+    font-weight: 500;
+    text-align:center;
+}
+
+form#sign-up div.email-form label,
+form#sign-up div.name-form label{
+    margin : 5rem;
+}
+form#sign-up div.password-form label{
+    margin: 4.28rem;
+}
+form#sign-up div.confirm-password-form label{
+    margin: 2.28rem;
+}
+form#sign-up div.passcode-form label{
+    margin : 4.2rem;
+}
+.btn{
+    padding:10px;
+    background-color: var(--btn-color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: var(--font-color);
+    letter-spacing: 0.1rem;
+    line-height: 1;
+    border-radius: 1rem;
+    text-transform: uppercase;
+}

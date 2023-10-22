@@ -1,5 +1,6 @@
 <nav>
-    <ul>
+    <p class="logo">ERS</p>
+    <ul id="header-container">
         <% if (locals.admin && locals.admin.user) { %>
             <li>
                 <a href="/admin/dashboard">Dashboard</a>
@@ -17,6 +18,10 @@
             <li>
                 <a href="/user/sign-out">Sign Out</a>
             </li>
+        <%}else{%>
+            <li><a href="/admin/sign-in">Admin Sign-in</a></li>
+            <li><a href="/user/sign-in">User Sign-in</a></li>  
+            <li><a href="/">Back</a></li>    
         <%}%>
     </ul>
     
