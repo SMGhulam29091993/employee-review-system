@@ -15,4 +15,6 @@ router.post('/create-admin-sessions',passport.authenticate(
     }
 ),adminLogController.create_admin_session);
 
+router.get('/sign-out', adminLogController.destroy_admin_session);
+
 module.exports = router;

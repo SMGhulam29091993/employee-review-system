@@ -1,3 +1,23 @@
 <nav>
-    <h4>Header</h4>
+    <ul>
+        <% if (locals.admin && locals.admin.user) { %>
+            <li>
+                <a href="/admin/dashboard">Dashboard</a>
+            </li>
+            <li>
+                <a href="/admin/profile">Profile</a>
+            </li>
+            <li>
+                <a href="/admin/sign-out">Sign Out</a>
+            </li>
+        <%}else if(locals.user){%>
+            <li>
+                <a href="/user/profile">Profile</a>
+            </li>
+            <li>
+                <a href="/user/sign-out">Sign Out</a>
+            </li>
+        <%}%>
+    </ul>
+    
 </nav>

@@ -11,6 +11,8 @@ const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 
+// installin connect-mongo
+const MongoStore = require('connect-mongo');
 
 // connecting with the db
 const db = require('./config/mongoose');
@@ -30,7 +32,7 @@ app.set('layout extractScripts', true);
 app.set('view engine', 'ejs');
 app.set('views', './views');
 
-// creating the session
+// creating the session and mongo store is use to store session cookie in db
 app.use(session({
     name : 'ERS',
     secret : 'somethingBlah',
@@ -38,7 +40,15 @@ app.use(session({
     resave : false,
     cookie : {
         maxAge : (1000*60*100)
-    }
+    },
+    store: MongoStore.create({
+        mongoUrl : 'mongodb://127.0.0.1:27017/ers_db',
+        autoRemove: 'disabled'
+      },
+      function(err){
+        console.log(err || "connect-mongo setup is done");
+      })
+
 }))
 
 app.use(passport.initialize());

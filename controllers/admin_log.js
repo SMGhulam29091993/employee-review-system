@@ -17,6 +17,9 @@ module.exports.admin_profile = (req,res)=>{
 
 
 module.exports.admin_sign_up = (req,res)=>{
+    if(req.isAuthenticated() && req.user.passcode === 'YOUAREADMIN'){
+        return res.redirect('/admin/profile');
+    };
     return res.render('admin_sign_up',{
         title : 'Admin Sign-Up'
     });
@@ -53,6 +56,9 @@ module.exports.create = async (req, res) => {
 }
 
 module.exports.admin_sign_in = (req,res)=>{
+    if(req.isAuthenticated() && req.user.passcode === 'YOUAREADMIN'){
+        return res.redirect('/admin/profile');
+    };
     return res.render('admin_sign_in',{
         title : 'Admin Sign-In'
     });
@@ -60,4 +66,15 @@ module.exports.admin_sign_in = (req,res)=>{
 
 module.exports.create_admin_session = (req,res)=>{
     return res.redirect('/admin/profile');
+};
+
+module.exports.destroy_admin_session = (req,res)=>{
+    req.logout((err) => {
+        if (err) {
+            console.log(`Error logging out: ${err}`);
+            return res.redirect('/admin/profile'); // Redirect to a different page or handle the error as needed
+        }
+
+        return res.redirect('/');
+    });
 };
