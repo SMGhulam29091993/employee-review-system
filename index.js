@@ -19,6 +19,7 @@ const db = require('./config/mongoose');
 
 // to read the req from users
 app.use(express.urlencoded());
+app.use(cookieParser());
 
 app.use(expressLayout);
 // Middleware to serve static files

@@ -3,17 +3,46 @@ const User = require('../models/users');
 const passport = require('../config/passport-local-strategy');
 
 
-module.exports.admin_dashboard = (req,res)=>{
+module.exports.admin_dashboard = async (req,res)=>{
+    let user = await User.find({});
+
     return res.render('admin_dashboard',{
-        title : 'Admin Dashboard'
+        title : 'Admin Dashboard',
+        all_users : user
     })
 }
 
-module.exports.admin_profile = (req,res)=>{
-    return res.render('profile',{
-        title : `${req.user.name} Profile`
-    })
+module.exports.admin_profile = async (req, res) => {
+    const admin = req.user; // Assuming user data is in req.user
+
+    return res.render('profile', {
+        title: `${admin.name} Profile`,
+        user: admin // Pass the user data to the view
+    });
 }
+
+
+module.exports.destroy_user = async (req, res) => {
+    try {
+        // Get the user's ID from the request parameters
+        const userId = req.params.id;
+
+        // Find the user by ID and remove it
+        const user = await User.findByIdAndRemove(userId);
+
+        if (!user) {
+            // Handle the case where the user is not found
+            return res.status(404).send('User not found');
+        }
+
+        // Redirect to a different page or handle the success as needed
+        return res.redirect('/admin/dashboard');
+    } catch (err) {
+        console.error(err);
+        // Redirect to a different page or handle errors as needed
+        res.redirect('/admin/dashboard');
+    }
+};
 
 
 module.exports.admin_sign_up = (req,res)=>{

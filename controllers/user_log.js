@@ -1,11 +1,28 @@
 const User = require('../models/users');
+const passport = require('../config/passport-local-strategy');
 
+module.exports.profile = async (req, res) => {
+    let user = await User.findById(req.params.id);
+    if(user){
+        return res.render('profile',{
+            title : `${req.user.name} Profile`,
+            user : user
+        })
+    }else{
+        return res.redirect('back');
+    }
+};
 
-module.exports.profile = (req,res)=>{
-    return res.render('profile',{
-        title : `${req.user.name} Profile`
+module.exports.review = (req,res)=>{
+    let user = req.user;
+    return res.render('review',{
+        title : `${user.name} Review`,
+        user : user
     })
 }
+
+
+
 
 
 module.exports.user_sign_up = (req,res)=>{
@@ -54,14 +71,14 @@ module.exports.user_sign_in = (req,res)=>{
 };
 
 module.exports.create_session = (req,res)=>{
-    return res.redirect('/user/profile');
+    return res.redirect('/user/review');
 };
 
 module.exports.destroy_session = (req,res)=>{
     req.logout((err) => {
         if (err) {
             console.log(`Error logging out: ${err}`);
-            return res.redirect('/admin/profile'); // Redirect to a different page or handle the error as needed
+            return res.redirect('/user/profile'); // Redirect to a different page or handle the error as needed
         }
 
         return res.redirect('/');

@@ -1,5 +1,22 @@
 <body>
     <main>
-        <h1>ADMIN Dashboard</h1>
+        <ul>
+            <% for (let user of all_users) { %>
+                <% if (user.passcode !== 'YOUAREADMIN') { %>
+                    <li>
+                        <p><%= user.name %></p>
+                        <% if (user.passcode !== 'YOUAREADMIN') { %>
+                            <p>Admin  : False</p>
+                        <%}else{%>
+                            <p>Admin  : True</p>
+                         <%}%>   
+                        <form action="/user/profile/<%= user.id %>" method="GET">
+                            <button class="btn">Visit</button>
+                        </form>
+                        <a href="/admin/destroy-user/<%= user.id %>"><button class="btn">Delete</button></a>
+                    </li>
+                <% } %>
+            <% } %>
+        </ul>
     </main>
 </body>

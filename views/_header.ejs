@@ -6,14 +6,17 @@
                 <a href="/admin/dashboard">Dashboard</a>
             </li>
             <li>
-                <a href="/admin/profile">Profile</a>
+                <a href="/admin/profile"><%= admin.user.name %></a>
             </li>
             <li>
                 <a href="/admin/sign-out">Sign Out</a>
             </li>
         <%}else if(locals.user){%>
             <li>
-                <a href="/user/profile">Profile</a>
+                <a href="/user/profile/<%= user.id%>"><%= user.name %></a>
+            </li>
+            <li>
+                <a href="/user/review">My Reviews</a>
             </li>
             <li>
                 <a href="/user/sign-out">Sign Out</a>

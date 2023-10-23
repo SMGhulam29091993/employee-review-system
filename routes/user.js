@@ -7,7 +7,9 @@ const userLogController = require('../controllers/user_log');
 
 router.get('/sign-up', userLogController.user_sign_up);
 router.get('/sign-in', userLogController.user_sign_in);
-router.get('/profile',passport.checkAuthentication, userLogController.profile);
+// routes/user.js
+router.get(`/profile/:id`,passport.checkAuthentication, userLogController.profile);
+router.get('/review', userLogController.review);
 router.post('/create-user', userLogController.create_user);
 
 // passport as a middle-ware to authenticate
