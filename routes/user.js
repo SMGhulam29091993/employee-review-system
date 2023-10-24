@@ -7,6 +7,7 @@ const userLogController = require('../controllers/user_log');
 
 router.get('/sign-up', userLogController.user_sign_up);
 router.get('/sign-in', userLogController.user_sign_in);
+router.get('/home',userLogController.home);
 // routes/user.js
 router.get(`/profile/:id`,passport.checkAuthentication, userLogController.profile);
 router.get('/review/:id', passport.checkAuthentication,userLogController.review);

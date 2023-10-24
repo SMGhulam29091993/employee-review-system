@@ -1,12 +1,23 @@
+<link rel="stylesheet" href="/css/profile.css">
+
 <main>
     <section>
-        <h1>User Profile: <%= user.name %></h1>
-        <ul>
-            <li>Email: <%= user.email %></li>
-        </ul>
-
-        <% if (employeeToReview) { %>
-            <%- include("review_form", { employeeToReview: employeeToReview }) %>
+        <% if (locals.admin && locals.admin) { %>
+            <h1 class="user-name">User Profile: <%= admin.user.name %></h1>
+            <h1 class="user-email">Email: <%= admin.user.email %></h1>
+            <h1 class="is-admin">isAdmin: True</h1>
+        <% } else if (locals.user) { %>
+            <h1 class="user-name">User Profile: <%= user.name %></h1>
+            <h1 class="user-email">Email: <%= user.email %></h1>
+            <% if (user.passcode !== 'YOUAREADMIN') { %>
+                <h1 class="is-admin">isAdmin: False</h1>
+            <% }else{%>
+                <h1 class="is-admin">isAdmin: True</h1>
+            <%} %>
+            <% if (employeeToReview) { %>
+                <%- include("review_form", { employeeToReview: employeeToReview }) %>
+            <% } %>
         <% } %>
     </section>
 </main>
+

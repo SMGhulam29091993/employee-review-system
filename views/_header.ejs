@@ -3,6 +3,9 @@
     <ul id="header-container">
         <% if (locals.admin && locals.admin.user) { %>
             <li>
+                <a href="/admin/home">Home</a>
+            </li>
+            <li>
                 <a href="/admin/dashboard">Dashboard</a>
             </li>
             <li>
@@ -12,6 +15,9 @@
                 <a href="/admin/sign-out">Sign Out</a>
             </li>
         <%}else if(locals.user){%>
+            <li>
+                <a href="/user/home">Home</a>
+            </li>
             <li>
                 <a href="/user/profile/<%= user.id%>"><%= user.name %></a>
             </li>

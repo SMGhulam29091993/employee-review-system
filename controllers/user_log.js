@@ -17,13 +17,17 @@ const Review = require('../models/review');
 // module.exports.review = async (req, res) => {
     
 // };
+module.exports.home = (req,res)=>{
+    return res.render('home',{
+        title : 'Home'
+    })
+}
 
 module.exports.profile = async (req, res) => {
     try {
         let user = await User.findById(req.params.id);
         let reviews = await Review.find({ reviewer: user._id });
 
-        let reviewer = null;
         let employeeToReview = null;
 
         if (reviews.length > 0) {
@@ -41,16 +45,9 @@ module.exports.profile = async (req, res) => {
             }
         }
 
-        // if (reviews.length > 0) {
-        //     // Assuming you want to display the latest review's employeeToReview
-        //     const latestReview = reviews[reviews.length - 1];
-        //     reviewer = await User.findById(user._id);
-        //     employeeToReview = await User.findById(latestReview.employeeToReview);
-        // }
-
         return res.render('profile', {
             title: `${user.name} Profile`,
-            reviewer: reviewer,
+            reviewer: user,
             employeeToReview: employeeToReview,
             user: user
         });
@@ -146,7 +143,7 @@ module.exports.user_sign_in = (req,res)=>{
 };
 
 module.exports.create_session = (req,res)=>{
-    return res.redirect('/');
+    return res.redirect('/user/home');
 };
 
 module.exports.destroy_session = (req,res)=>{

@@ -3,6 +3,11 @@ const User = require('../models/users');
 const Review = require('../models/review');
 const passport = require('../config/passport-local-strategy');
 
+module.exports.home = (req,res)=>{
+    return res.render('home',{
+        title : 'Home'
+    })
+}
 
 module.exports.admin_dashboard = async (req,res)=>{
     let user = await User.find({});
@@ -157,7 +162,7 @@ module.exports.admin_sign_in = (req,res)=>{
 };
 
 module.exports.create_admin_session = (req,res)=>{
-    return res.redirect('/admin/profile');
+    return res.redirect('/admin/home');
 };
 
 module.exports.destroy_admin_session = (req,res)=>{
