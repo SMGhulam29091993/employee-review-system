@@ -1,21 +1,31 @@
 <body>
     <main>
+        <form action="/admin/request-review" method="GET">
+            <button class="btn">Ask For Review</button>
+        </form>
         <ul>
             <% for (let user of all_users) { %>
-                <% if (user.passcode !== 'YOUAREADMIN') { %>
                     <li>
                         <p><%= user.name %></p>
                         <% if (user.passcode !== 'YOUAREADMIN') { %>
                             <p>Admin  : False</p>
+                            <form action="/admin/user-to-admin/<%= user.id %>" method="POST">
+                                <button class="btn">MAKE ADMINt</button>
+                            </form>
                         <%}else{%>
                             <p>Admin  : True</p>
+                            <% for(admin of all_admin){%>
+                                <% if(admin.email === user.email){%>
+                                <a href="/admin/destroy-admin/<%= admin.id %>"><button class="btn">Remove Admin</button></a>
+                                <%}%>
+                            <%}%>
                          <%}%>   
                         <form action="/user/profile/<%= user.id %>" method="GET">
                             <button class="btn">Visit</button>
                         </form>
+                        
                         <a href="/admin/destroy-user/<%= user.id %>"><button class="btn">Delete</button></a>
                     </li>
-                <% } %>
             <% } %>
         </ul>
     </main>

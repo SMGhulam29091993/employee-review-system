@@ -1,5 +1,16 @@
 <main>
     <section>
-        <h1><%= user.name %> Review View</h1>
+        
+        <% if(locals.user){ %>
+            <h1>Review Page</h1>
+            <ul>
+                <% for(review of all_reviews){%>
+                    <li>
+                        <p><%= review.rating%></p>
+                        <p><%= review.feedback%></p>
+                    </li>    
+                <%}%>
+            </ul>
+        <% } %>
     </section>
 </main>

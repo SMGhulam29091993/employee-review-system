@@ -1,26 +1,101 @@
 const User = require('../models/users');
 const passport = require('../config/passport-local-strategy');
+const Review = require('../models/review');
+
+// module.exports.profile = async (req, res) => {
+//     let user = await User.findById(req.params.id);
+//     if(user){
+//         return res.render('profile',{
+//             title : `${req.user.name} Profile`,
+//             user : user
+//         })
+//     }else{
+//         return res.redirect('back');
+//     }
+// };
+
+// module.exports.review = async (req, res) => {
+    
+// };
 
 module.exports.profile = async (req, res) => {
-    let user = await User.findById(req.params.id);
-    if(user){
-        return res.render('profile',{
-            title : `${req.user.name} Profile`,
-            user : user
-        })
-    }else{
-        return res.redirect('back');
+    try {
+        let user = await User.findById(req.params.id);
+        let reviews = await Review.find({ reviewer: user._id });
+
+        let reviewer = null;
+        let employeeToReview = null;
+
+        if (reviews.length > 0) {
+            // Find the latest review with status 'Pending' (if any)
+            let latestReview;
+            for (const review of reviews) {
+                if (review.status === 'Pending') {
+                    latestReview = review;
+                    break;
+                }
+            }
+
+            if (latestReview) {
+                employeeToReview = await User.findById(latestReview.employeeToReview);
+            }
+        }
+
+        // if (reviews.length > 0) {
+        //     // Assuming you want to display the latest review's employeeToReview
+        //     const latestReview = reviews[reviews.length - 1];
+        //     reviewer = await User.findById(user._id);
+        //     employeeToReview = await User.findById(latestReview.employeeToReview);
+        // }
+
+        return res.render('profile', {
+            title: `${user.name} Profile`,
+            reviewer: reviewer,
+            employeeToReview: employeeToReview,
+            user: user
+        });
+    } catch (err) {
+        console.log(`Error in rendering profile: ${err}`);
+        return res.status(500).send('Internal Server Error');
     }
 };
 
-module.exports.review = (req,res)=>{
-    let user = req.user;
+module.exports.review = async (req, res) => {
+    let user = await User.findById(req.params.id);
+    let myReviews = await Review.find({employeeToReview : user._id});
+    
     return res.render('review',{
-        title : `${user.name} Review`,
-        user : user
+        title: 'Review',
+        all_reviews : myReviews
     })
-}
+};
 
+
+
+
+
+module.exports.createReview = async (req,res)=>{
+    try{
+        // let review = await Review.create({
+        //     reviewer : req.body.reviewer,
+        //     employeeToReview: req.body.employeeToReview,
+        //     feedback : req.body.feedback,
+        //     rating : req.body.rating,
+        //     pending : 'Pending'
+        // });
+        let review = await Review.findOne({employeeToReview : req.body.employeeToReview});
+        if(review){
+            review.rating = req.body.rating;
+            review.feedback = req.body.feedback;
+            review.status = 'Done';
+            await review.save();
+            return res.redirect('back')
+        }
+    }catch(err){
+        console.log(err);
+        return res.status(500).send('Internal Server Error');
+    }
+};
 
 
 
@@ -71,7 +146,7 @@ module.exports.user_sign_in = (req,res)=>{
 };
 
 module.exports.create_session = (req,res)=>{
-    return res.redirect('/user/review');
+    return res.redirect('/');
 };
 
 module.exports.destroy_session = (req,res)=>{
@@ -83,4 +158,5 @@ module.exports.destroy_session = (req,res)=>{
 
         return res.redirect('/');
     });
-}
+};
+

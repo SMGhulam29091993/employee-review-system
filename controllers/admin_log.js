@@ -1,14 +1,17 @@
 const Admin = require('../models/admin');
 const User = require('../models/users');
+const Review = require('../models/review');
 const passport = require('../config/passport-local-strategy');
 
 
 module.exports.admin_dashboard = async (req,res)=>{
     let user = await User.find({});
+    let admin = await Admin.find({});
 
     return res.render('admin_dashboard',{
         title : 'Admin Dashboard',
-        all_users : user
+        all_users : user,
+        all_admin : admin
     })
 }
 
@@ -84,6 +87,66 @@ module.exports.create = async (req, res) => {
     }
 }
 
+
+module.exports.makeUserAdmin = async (req,res)=>{
+    try{    
+        let user = await User.findById(req.params.id);
+        if(user && user.passcode !== 'YOUAREADMIN'){
+            let admin = await Admin.create({
+                name : user.name,
+                email : user.email,
+                password : user.password,
+            });
+            await admin.save();
+
+            user.passcode = 'YOUAREADMIN';
+            await user.save();
+            res.redirect('/admin/dashboard');
+        } else {
+            // Handle the case where the user is not found or already an admin
+            res.status(404).send('User not found or already an admin');
+        }
+
+    }catch(err){
+        console.log(`Error in making User Admin ${err}`);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.removeAdmin = async (req, res) => {
+    try {
+        // Get the admin's ID from the request parameters
+        const adminId = req.params.id;
+
+        // Find the admin by ID
+        const admin = await Admin.findById(adminId);
+
+        // Find the user associated with the admin
+        const user = await User.findOne({ email: admin.email });
+
+        if (!admin || !user) {
+            // Handle the case where the admin or associated user is not found
+            return res.status(404).send('Admin not found');
+        }
+
+        // Revoke admin privileges
+        user.passcode = "None";
+        user.save();
+
+        // Remove the admin's entry from the database
+        await Admin.findByIdAndRemove(adminId);
+
+        // Redirect to a different page or handle the success as needed
+        return res.redirect('/admin/dashboard');
+    } catch (err) {
+        console.error(err);
+        // Redirect to a different page or handle errors as needed
+        res.redirect('/admin/dashboard');
+    }
+};
+
+
+
 module.exports.admin_sign_in = (req,res)=>{
     if(req.isAuthenticated() && req.user.passcode === 'YOUAREADMIN'){
         return res.redirect('/admin/profile');
@@ -107,3 +170,33 @@ module.exports.destroy_admin_session = (req,res)=>{
         return res.redirect('/');
     });
 };
+
+module.exports.request_review = async(req,res)=>{
+    try{
+        let employee = await User.find({});
+
+        return res.render('ask-review',{
+            title : 'Review',
+            allEmployees : employee
+        })
+    }catch(err){
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+};
+
+module.exports.submitReviewRequest = async (req,res)=>{
+    try{
+        let review = await Review.create({
+            reviewer : req.body.reviewer,
+            employeeToReview : req.body.employeeToReview
+        });
+        if(!review){
+            return res.redirect('back');
+        }
+        return res.redirect('/admin/dashboard');
+    }catch(err){
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+    }
+}
