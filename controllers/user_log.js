@@ -64,6 +64,40 @@ module.exports.profile = async (req, res) => {
     }
 };
 
+module.exports.update_profile = async (req,res)=>{
+    try{
+        let user = await User.findById(req.params.id);
+        return res.render('update_profile',{
+            title : `${user.name} Profile Update`,
+            user : user
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).send('Internal Server Error');
+    }
+    
+};
+
+module.exports.create_update = async (req, res) => {
+    try {
+        let user = await User.findById(req.params.id);
+        if (user) {
+            user.address = req.body.address;
+            user.mobile = req.body.mobile;
+            user.bloodGroup = req.body.bloodGroup;
+            user.designation = req.body.designation;
+            user.department = req.body.department;
+
+            await user.save();  
+        }
+        return res.redirect('/user/home');
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send('Internal Server Error');
+    };
+};
+
+
 module.exports.review = async (req, res) => {
     let user = await User.findById(req.params.id);
     let myReviews = await Review.find({employeeToReview : user._id});
@@ -84,7 +118,7 @@ module.exports.createReview = async (req, res) => {
             pendingReview.rating = req.body.rating;
             pendingReview.feedback = req.body.feedback;
             pendingReview.status = 'Done';
-            await pendingReview.save();
+            await pendingReview.save(); 
         }
         // } else if(review && review.status === 'Pending') {
         //     review.rating = req.body.rating;

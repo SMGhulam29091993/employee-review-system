@@ -11,6 +11,8 @@ router.get('/home',userLogController.home);
 // routes/user.js
 router.get(`/profile/:id`,passport.checkAuthentication, userLogController.profile);
 router.get('/review/:id', passport.checkAuthentication,userLogController.review);
+router.get('/update_profile/:id',passport.checkAuthentication,userLogController.update_profile);
+router.post('/create_update/:id',passport.checkAuthentication, userLogController.create_update);
 router.post('/create-user', userLogController.create_user);
 router.post('/review/create', passport.checkAuthentication, userLogController.createReview);
 

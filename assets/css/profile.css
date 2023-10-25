@@ -1,3 +1,7 @@
+:root{
+    --font-color : #fff;
+    --btn-color:rgb(87, 166, 231);
+}
 section {
     background-color: #fff;
     border-radius: 10px;
@@ -7,7 +11,11 @@ section {
     width: 80%;
     margin: 0 auto;
 }
-
+.profile-container{
+    display: flex;
+    align-items:first baseline;
+    justify-content: space-between;
+}
 h1 {
     font-size: 1.5rem;
     color: #007BFF;
@@ -23,4 +31,16 @@ h1.user-email {
     font-size: 1.2rem;
     color: #777;
     margin-top: 5px;
+}
+.request-update-btn{
+    padding:10px;
+    background-color: var(--btn-color);
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: var(--font-color);
+    letter-spacing: 0.1rem;
+    line-height: 1;
+    border-radius: 1rem;
+    text-transform: uppercase;
 }

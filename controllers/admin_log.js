@@ -21,12 +21,52 @@ module.exports.admin_dashboard = async (req,res)=>{
 }
 
 module.exports.admin_profile = async (req, res) => {
-    const admin = req.user; // Assuming user data is in req.user
+    try{
+        let admin = await Admin.findById(req.params.id);
+        console.log(admin);
+        if(admin){
+            return res.render('profile',{
+                title : `${admin.name} Profile`,
+            })
+        }
+    }catch(err){
+        console.log(err);
+        return res.status(500).send('Internal Server Error');
+    }
+}
 
-    return res.render('profile', {
-        title: `${admin.name} Profile`,
-        user: admin // Pass the user data to the view
-    });
+module.exports.update_profile_admin = async (req,res)=>{
+    try{
+        let admin = await Admin.findById(req.params.id);
+        return res.render('update_profile',{
+            title : `${admin.name} Profile Update`,
+            user : admin
+        });
+    }catch(err){
+        console.log(err);
+        return res.status(500).send('Internal Server Error');
+    }
+    
+};
+
+module.exports.create_update_admin = async (req, res) => {
+    try {
+        let admin = await Admin.findById(req.params.id);
+        if (admin) {
+            admin.address = req.body.address;
+            admin.mobile = req.body.mobile;
+            admin.bloodGroup = req.body.bloodGroup;
+            admin.designation = req.body.designation;
+            admin.department = req.body.department;
+
+            await admin.save();
+        }
+
+        return res.redirect('/admin/home');
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send('Internal Server Error');
+    }
 }
 
 

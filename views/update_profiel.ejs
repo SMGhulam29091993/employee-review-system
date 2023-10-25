@@ -1,5 +1,0 @@
-<main>
-    <section>
-        
-    </section>
-</main>
