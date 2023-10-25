@@ -15,7 +15,7 @@
                     <h1 class="user-department">Department: <%= admin.user.department %></h1>
                 </div>
                 <form action="/admin/update_profile_admin/<%= admin.user._id %>" method="GET" >
-                    <button class="request-update-btn">Edit</button>
+                    <button class="request-update-btn btn">Edit</button>
                 </form>
             </div>
             
@@ -35,15 +35,17 @@
                     <h1 class="user-designation">Designation: <%= user.designation %></h1>
                     <h1 class="user-department">Department: <%= user.department %></h1>
                 </div>
-                <form action="/user/update_profile/<%= user._id %>" method="GET" >
+                <form action="/user/update_profile/<%= user._id %>" method="GET" id="edit" >
                     <button class="request-update-btn">Edit</button>
                 </form>
             </div>
-            
+            <div class="review-form">
+                <% if (employeeToReview) { %>
+                    <%- include("review_form", { employeeToReview: employeeToReview }) %>
+                <% } %>
+            </div>
 
-            <% if (employeeToReview) { %>
-                <%- include("review_form", { employeeToReview: employeeToReview }) %>
-            <% } %>
+            
         <% } %>
     </section>
 </main>

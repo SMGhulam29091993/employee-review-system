@@ -5,11 +5,12 @@
 section {
     background-color: #fff;
     border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: left;
     width: 80%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 .profile-container{
     display: flex;
@@ -32,7 +33,7 @@ h1.user-email {
     color: #777;
     margin-top: 5px;
 }
-.request-update-btn{
+button{
     padding:10px;
     background-color: var(--btn-color);
     outline: none;

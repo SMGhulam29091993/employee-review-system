@@ -28,7 +28,7 @@ module.exports.profile = async (req, res) => {
         let user = await User.findById(req.params.id);
         let reviews = await Review.find({ reviewer: user._id });
 
-        let employeeToReview = null;
+        let employeeToReview;
         let reviewSubmitted = false;
 
         

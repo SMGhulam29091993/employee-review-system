@@ -20,10 +20,12 @@ module.exports.admin_dashboard = async (req,res)=>{
     })
 }
 
+
+
+
 module.exports.admin_profile = async (req, res) => {
     try{
         let admin = await Admin.findById(req.params.id);
-        console.log(admin);
         if(admin){
             return res.render('profile',{
                 title : `${admin.name} Profile`,

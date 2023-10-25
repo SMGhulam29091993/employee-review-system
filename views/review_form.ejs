@@ -4,7 +4,7 @@
         <h2>Review Employee: <%= employeeToReview.name %></h2>
 
         <% if(!reviewSubmitted){%>
-            <form action="/user/review/create" method="POST">
+            <form action="/user/review/create" method="POST" id="review-form">
             
                 <input type="hidden" name="reviewer" value="<%= reviewer.id%>">
                 <input type="hidden" name="employeeToReview" value="<%= employeeToReview.id%>">
