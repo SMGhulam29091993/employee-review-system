@@ -6,8 +6,9 @@ const Admin = require('../models/admin');
 const User = require('../models/users');
 
 passport.use('localAdmin', new LocalStrategy({
-    usernameField: 'email'
-}, async (email, password, done) => {
+    usernameField: 'email',
+    passReqToCallback : true
+}, async (req,email, password, done) => {
     try {
         let admin = await Admin.findOne({ email: email });
         if (admin) {
@@ -15,26 +16,32 @@ passport.use('localAdmin', new LocalStrategy({
                 return done(null, admin);
             }
         }
+        req.flash('error','Invalid Username/Password');
         return done(null, false, { message: 'Invalid Admin Username/Password' });
     } catch (error) {
+        req.flash('error',error)
         return done(error);
     }
 }));
 
 // Local Strategy for User
 passport.use('local', new LocalStrategy({
-    usernameField: 'email'
-}, async (email, password, done) => {
+    usernameField: 'email',
+    passReqToCallback : true
+}, async (req,email, password, done) => {
     try {
         let user = await User.findOne({ email: email });
         if (user && user.password === password) {
             return done(null, user);
         }
+        req.flash('error','Invalid Username/Password');
         return done(null, false, { message: 'Invalid Username/Password' });
     } catch (error) {
+        req.flash('error',error)
         return done(error);
     }
 }));
+
 
 // serializing the user to decide which key is to be kept in the cookies
 passport.serializeUser(function(user,done){

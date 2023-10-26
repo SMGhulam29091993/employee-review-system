@@ -59,7 +59,8 @@ module.exports.profile = async (req, res) => {
             reviewSubmitted: reviewSubmitted,
         });
     } catch (err) {
-        console.log(`Error in rendering profile: ${err}`);
+        // console.log(`Error in rendering profile: ${err}`);
+        req.flash('error',err);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -72,7 +73,8 @@ module.exports.update_profile = async (req,res)=>{
             user : user
         });
     }catch(err){
-        console.log(err);
+        // console.log(err);
+        req.flash('error',err);
         return res.status(500).send('Internal Server Error');
     }
     
@@ -90,9 +92,11 @@ module.exports.create_update = async (req, res) => {
 
             await user.save();  
         }
+        req.flash('success', 'User Updated Successfully')
         return res.redirect('/user/home');
     } catch (err) {
-        console.log(err);
+        // console.log(err);
+        req.flash('error', err);
         return res.status(500).send('Internal Server Error');
     };
 };
@@ -128,9 +132,11 @@ module.exports.createReview = async (req, res) => {
         // }
 
         // Redirect back to the profile page or any other appropriate page
+        req.flash('success', 'Review Submitted');
         return res.redirect('back');
     } catch (err) {
-        console.log(err);
+        // console.log(err);
+        req.flash('error',err);
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -188,13 +194,16 @@ module.exports.create_user = async (req,res)=>{
                 email : req.body.email,
                 password : req.body.password
             });
+            req.flash('success', 'User Signed-Up Successfully')
             return res.redirect('/user/sign-in')
         }else{
-            console.log('You are not authorise create this profile')
+            // console.log('You are not authorise create this profile')
+            req.flash('error','You are not authorise create this profile')
             return res.redirect('/admin/sign-up'); // Or some other appropriate action.
         }
     }catch(err){
-        console.log(`Error in creating the user ${err}`);
+        // console.log(`Error in creating the user ${err}`);
+        req.flash('error',err)
         return res.status(500).send('Internal Server Error');
     }
 
@@ -211,6 +220,7 @@ module.exports.user_sign_in = (req,res)=>{
 };
 
 module.exports.create_session = (req,res)=>{
+    req.flash('success', 'User Signed-in Successfully')
     return res.redirect('/user/home');
 };
 
@@ -220,7 +230,7 @@ module.exports.destroy_session = (req,res)=>{
             console.log(`Error logging out: ${err}`);
             return res.redirect('/user/profile'); // Redirect to a different page or handle the error as needed
         }
-
+        req.flash('success', 'User Sign-Out Successfully')
         return res.redirect('/');
     });
 };

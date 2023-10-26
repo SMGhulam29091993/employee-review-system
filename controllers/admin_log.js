@@ -32,7 +32,8 @@ module.exports.admin_profile = async (req, res) => {
             })
         }
     }catch(err){
-        console.log(err);
+        // console.log(err);
+        req.flash('error',err);
         return res.status(500).send('Internal Server Error');
     }
 }
@@ -45,7 +46,8 @@ module.exports.update_profile_admin = async (req,res)=>{
             user : admin
         });
     }catch(err){
-        console.log(err);
+        // console.log(err);
+        req.flash('error',err);
         return res.status(500).send('Internal Server Error');
     }
     
@@ -63,10 +65,11 @@ module.exports.create_update_admin = async (req, res) => {
 
             await admin.save();
         }
-
+        req.flash('success', 'Admin Updated Successfully');
         return res.redirect('/admin/home');
     } catch (err) {
-        console.log(err);
+        // console.log(err);
+        req.flash('error',err);
         return res.status(500).send('Internal Server Error');
     }
 }
@@ -86,9 +89,11 @@ module.exports.destroy_user = async (req, res) => {
         }
 
         // Redirect to a different page or handle the success as needed
+        req.flash('success', 'User Removed Successfully');
         return res.redirect('/admin/dashboard');
     } catch (err) {
-        console.error(err);
+        // console.error(err);
+        req.flash('error',err);
         // Redirect to a different page or handle errors as needed
         res.redirect('/admin/dashboard');
     }
@@ -122,14 +127,17 @@ module.exports.create = async (req, res) => {
                 password: req.body.password,
                 passcode : req.body.passcode
             });
+            req.flash('success', 'Admin Signed-Up Successfully');
             return res.redirect('/admin/sign-in');
         } else {
             // Handle invalid passcode here, e.g., show an error message.
-            console.log('You are not authorise create this profile')
+            // console.log('You are not authorise create this profile')
+            req.flash('error','You are not authorise create this profile');
             return res.redirect('/admin/sign-up'); // Or some other appropriate action.
         }
     } catch (err) {
-        console.log(`Error in creating the admin: ${err}`);
+        // console.log(`Error in creating the admin: ${err}`);
+        req.flash('error',err)
         res.status(500).send('Internal server error');
     }
 }
@@ -148,14 +156,17 @@ module.exports.makeUserAdmin = async (req,res)=>{
 
             user.passcode = 'YOUAREADMIN';
             await user.save();
+            req.flash('success', 'Admin Assigned Successfully');
             res.redirect('/admin/dashboard');
         } else {
+            req.flash('error','User not found or already an admin')
             // Handle the case where the user is not found or already an admin
             res.status(404).send('User not found or already an admin');
         }
 
     }catch(err){
-        console.log(`Error in making User Admin ${err}`);
+        // console.log(`Error in making User Admin ${err}`);
+        req.flash('error',err)
         return res.status(500).send('Internal Server Error');
     }
 };
@@ -184,9 +195,11 @@ module.exports.removeAdmin = async (req, res) => {
         await Admin.findByIdAndRemove(adminId);
 
         // Redirect to a different page or handle the success as needed
+        req.flash('success', 'Admin Un-assigned Successfully');
         return res.redirect('/admin/dashboard');
     } catch (err) {
-        console.error(err);
+        // console.error(err);
+        req.flash('error',err);
         // Redirect to a different page or handle errors as needed
         res.redirect('/admin/dashboard');
     }
@@ -204,6 +217,7 @@ module.exports.admin_sign_in = (req,res)=>{
 };
 
 module.exports.create_admin_session = (req,res)=>{
+    req.flash('success', 'Admin Signed-In Successfully');
     return res.redirect('/admin/home');
 };
 
@@ -213,7 +227,7 @@ module.exports.destroy_admin_session = (req,res)=>{
             console.log(`Error logging out: ${err}`);
             return res.redirect('/admin/profile'); // Redirect to a different page or handle the error as needed
         }
-
+        req.flash('success', 'Admin Signed-Out Successfully');
         return res.redirect('/');
     });
 };
@@ -227,7 +241,8 @@ module.exports.request_review = async(req,res)=>{
             allEmployees : employee
         })
     }catch(err){
-        console.error(err);
+        // console.error(err);
+        req.flash('error',err)
         res.status(500).send('Internal Server Error');
     }
 };
@@ -241,9 +256,10 @@ module.exports.submitReviewRequest = async (req,res)=>{
         if(!review){
             return res.redirect('back');
         }
+        req.flash('success', 'Review Requested Successfully');
         return res.redirect('/admin/dashboard');
     }catch(err){
-        console.error(err);
+        // console.error(err);
         res.status(500).send('Internal Server Error');
     }
 }

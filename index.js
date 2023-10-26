@@ -17,6 +17,10 @@ const MongoStore = require('connect-mongo');
 // connecting with the db
 const db = require('./config/mongoose');
 
+const flash = require('connect-flash');
+
+const customMware = require('./config/middleware');
+
 // to read the req from users
 app.use(express.urlencoded());
 app.use(cookieParser());
@@ -56,6 +60,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(passport.setUserAuthenticatedUser);
 app.use(passport.setAdminAuthenticatedUser);
+
+app.use(flash());
+app.use(customMware.setFlash);
 
 app.use('/', require('./routes'));
 
