@@ -5,16 +5,32 @@
 }
 section{
     margin : 2rem ; 
-    padding: 1rem;
+    padding: 2rem;
+    height : 90%;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 
 }
 #user-table {
-    margin: 2rem auto;
+    margin: 1rem auto;
     padding : 1rem;
     border-collapse: collapse;
     width:50%;
     font-family: sans-serif;
+    overflow: auto;
+    max-height: 50%;
+    /* scrollbar-width: thin;
+    scrollbar-color: var(--btn-color) var(--font-color); */
+}
+#user-table::-webkit-scrollbar {
+    width: 8px;
+}
+#user-table::-webkit-scrollbar-thumb {
+    background-color: var(--btn-color);
+    border-radius: 8px;
+}
+#user-table::-webkit-scrollbar-track {
+    background-color: lightgoldenrodyellow;
+    border-radius: 8px;
 }
 
 #user-table th, #user-table td {

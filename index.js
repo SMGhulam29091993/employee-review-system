@@ -1,4 +1,5 @@
 const express = require('express');
+const env = require('./config/environment');
 const cookieParser = require('cookie-parser');
 const app = express();
 
@@ -27,7 +28,7 @@ app.use(cookieParser());
 
 app.use(expressLayout);
 // Middleware to serve static files
-app.use(express.static('assets'));
+app.use(express.static(env.asset_path));
 
 // to extract the style and scripts from partial views
 app.set('layout extractStyles', true);
@@ -40,7 +41,7 @@ app.set('views', './views');
 // creating the session and mongo store is use to store session cookie in db
 app.use(session({
     name : 'ERS',
-    secret : 'somethingBlah',
+    secret : env.session_cookie_key,
     saveUninitialized : false,
     resave : false,
     cookie : {
