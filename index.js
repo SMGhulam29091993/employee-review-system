@@ -1,11 +1,10 @@
 const express = require('express');
-require('dotenv').config;
 const env = require('./config/environment');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const app = express();
 
-const port = process.env.PORT || 8000;
+const port = 8000;
 
 const expressLayout = require('express-ejs-layouts');
 
