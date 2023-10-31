@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Employee Review System
 The Employee Review System is an application designed to facilitate performance reviews and feedback submissions among employees. It offers a platform for employees to provide feedback on each other's performance and allows administrators to manage the process efficiently.
 
@@ -54,3 +55,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 Acknowledgments
 Thanks to the developers who contributed to this project.
 Inspiration for creating an efficient employee review system.
+=======
+# employee-review-system
+Create an employee review system 
+>>>>>>> 353732d7586b3c1eca912196414a940085a7d9ba
