@@ -1,9 +1,11 @@
 const express = require('express');
+require('dotenv').config;
 const env = require('./config/environment');
+const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const app = express();
 
-const port = 8000;
+const port = process.env.PORT || 8000;
 
 const expressLayout = require('express-ejs-layouts');
 
@@ -29,6 +31,8 @@ app.use(cookieParser());
 app.use(expressLayout);
 // Middleware to serve static files
 app.use(express.static(env.asset_path));
+
+app.use(logger(env.morgan.mode, env.morgan.options));
 
 // to extract the style and scripts from partial views
 app.set('layout extractStyles', true);
