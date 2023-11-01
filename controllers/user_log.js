@@ -100,6 +100,26 @@ module.exports.create_update = async (req, res) => {
         return res.status(500).send('Internal Server Error');
     };
 };
+module.exports.reset_password = (req,res)=>{
+    return res.render('forgot_password',{
+        title : "Reset-Password"
+    })
+}
+module.exports.update_password = async (req,res)=>{
+    try{
+        let user = await User.findOne({email : req.body.email});
+        if(req.body.password !== req.body.confirm_password){
+            return res.redirect('back');
+        }
+        user.password = req.body.password;
+        user.save();
+        return res.redirect('/user/sign-in');
+
+    }catch(err){
+        req.flash('error', err);
+        return res.status(500).send('Internal Server Error');
+    }
+};
 
 
 module.exports.review = async (req, res) => {
