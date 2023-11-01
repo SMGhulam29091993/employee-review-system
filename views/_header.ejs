@@ -19,11 +19,6 @@
                 <a href="/user/home">Home</a>
             </li>
             <li>
-                <% if(user.passcode==='YOUAREADMIN'){%>
-                    <a href="/admin/dashboard">Dashboard</a>
-                <%}%>
-            </li>
-            <li>
                 <a href="/user/profile/<%= user.id%>"><%= user.name %></a>
             </li>
             <li>
