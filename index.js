@@ -1,11 +1,9 @@
 const express = require('express');
 require('dotenv').config();
-const env = require('./config/environment');
-const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const app = express();
 
-const port = process.env.PORT;
+const port = process.env.PORT || 8000;
 
 const expressLayout = require('express-ejs-layouts');
 
@@ -30,9 +28,9 @@ app.use(cookieParser());
 
 app.use(expressLayout);
 // Middleware to serve static files
-app.use(express.static(env.asset_path));
+app.use(express.static('./assets'));
 
-app.use(logger(env.morgan.mode, env.morgan.options));
+
 
 // to extract the style and scripts from partial views
 app.set('layout extractStyles', true);
@@ -45,14 +43,14 @@ app.set('views', './views');
 // creating the session and mongo store is use to store session cookie in db
 app.use(session({
     name : 'ERS',
-    secret : env.session_cookie_key,
+    secret : process.env.SESSION_COOKIE_KEY,
     saveUninitialized : false,
     resave : false,
     cookie : {
         maxAge : (1000*60*100)
     },
     store: MongoStore.create({
-        mongoUrl : 'mongodb://127.0.0.1:27017/ers_db',
+        mongoUrl : process.env.MOGODB_URL,
         autoRemove: 'disabled'
       },
       function(err){

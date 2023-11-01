@@ -1,5 +1,5 @@
 const passport = require('passport');
-const env = require('./environment');
+require('dotenv').config();
 
 const LocalStrategy = require('passport-local').Strategy;
 
@@ -13,7 +13,7 @@ passport.use('localAdmin', new LocalStrategy({
     try {
         let admin = await Admin.findOne({ email: email });
         if (admin) {
-            if (admin.passcode === env.passcode_key && admin.password === password) {
+            if (admin.passcode === process.env.PASSCODE_KEY && admin.password === password) {
                 return done(null, admin);
             }
         }
@@ -83,7 +83,7 @@ passport.checkAuthentication = function(req, res, next) {
 
 
 passport.setUserAuthenticatedUser = function(req, res, next) {
-    if (req.isAuthenticated() && req.user.passcode !== env.passcode_key) {
+    if (req.isAuthenticated() && req.user.passcode !== process.env.PASSCODE_KEY) {
         // Set the authenticated user to res.locals for views
         res.locals.user = req.user;
     }
@@ -91,7 +91,7 @@ passport.setUserAuthenticatedUser = function(req, res, next) {
 }
 
 passport.checkAdminAuthentication = function(req, res, next) {
-    if (req.isAuthenticated() && req.user.passcode === env.passcode_key) {
+    if (req.isAuthenticated() && req.user.passcode === process.env.PASSCODE_KEY) {
         return next();
     } else {
         // Redirect or handle unauthorized access as needed
@@ -100,7 +100,7 @@ passport.checkAdminAuthentication = function(req, res, next) {
 };
 
 passport.setAdminAuthenticatedUser = function(req, res, next) {
-    if (req.isAuthenticated() && req.user.passcode === env.passcode_key) {
+    if (req.isAuthenticated() && req.user.passcode === process.env.PASSCODE_KEY) {
         // Initialize res.locals.admin as an empty object if it doesn't exist
         res.locals.admin = res.locals.admin || {};
         // Set the authenticated admin user to res.locals for views
