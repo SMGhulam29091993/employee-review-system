@@ -73,7 +73,7 @@ passport.deserializeUser(async function (id, done) {
 
 // check if the user is authenticated
 passport.checkAuthentication = function(req, res, next) {
-    if (req.isAuthenticated() || req.user.passcode === process.env.PASSCODE_KEY) { 
+    if (req.isAuthenticated()) { 
         return next();
     } else {
         // Handle unauthorized access as needed, e.g., redirect to a login page
