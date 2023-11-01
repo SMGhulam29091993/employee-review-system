@@ -16,7 +16,7 @@ router.get('/update_profile/:id',passport.checkAuthentication,userLogController.
 router.post('/create_update/:id',passport.checkAuthentication, userLogController.create_update);
 router.post('/create-user', userLogController.create_user);
 router.post('/review/create', passport.checkAuthentication, userLogController.createReview);
-router.post('update-password', userLogController.update_password);
+router.post('/update-password', userLogController.update_password);
 
 // passport as a middle-ware to authenticate
 router.post('/create-sessions',passport.authenticate(
