@@ -14,9 +14,14 @@
             <li>
                 <a href="/admin/sign-out">Sign Out</a>
             </li>
-        <%}else if(locals.user || locals.user.passcode === 'YOUAREADMIN'){%>
+        <%}else if(locals.user){%>
             <li>
                 <a href="/user/home">Home</a>
+            </li>
+            <li>
+                <% if(user.passcode==='YOUAREADMIN'){%>
+                    <a href="/admin/dashboard">Dashboard</a>
+                <%}%>
             </li>
             <li>
                 <a href="/user/profile/<%= user.id%>"><%= user.name %></a>
