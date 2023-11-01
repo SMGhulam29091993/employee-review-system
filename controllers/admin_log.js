@@ -75,6 +75,27 @@ module.exports.create_update_admin = async (req, res) => {
 }
 
 
+module.exports.reset_password = (req,res)=>{
+    return res.render('admin_forgot_password',{
+        title : "Reset-Password"
+    })
+}
+module.exports.update_password = async (req,res)=>{
+    try{
+        let admin = await User.findOne({email : req.body.email});
+        if(req.body.password !== req.body.confirm_password){
+            return res.redirect('back');
+        }
+        user.password = req.body.password;
+        user.save();
+        return res.redirect('/admin/sign-in');
+
+    }catch(err){
+        req.flash('error', err);
+        return res.status(500).send('Internal Server Error');
+    }
+};
+
 module.exports.destroy_user = async (req, res) => {
     try {
         // Get the user's ID from the request parameters
